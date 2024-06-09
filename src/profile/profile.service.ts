@@ -1,24 +1,16 @@
-import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import dataSource from "../config/typeorm.config";
 
-import UserWithThatCredentialsAlreadyExistsException from "../exceptions/UserWithThatCredentialsAlreadyExistsException";
 import DataStoredInToken from "../interfaces/dataStoredInToken";
 import TokenService from "../token/token.service";
 import Token from "../token/token.entity";
-import { isEmail, isPhoneNumber } from "class-validator";
-import WrongCredentialsException from "../exceptions/WrongCredentialsException";
-import WrongRefreshTokenException from "../exceptions/WrongRefreshTokenException";
-import WrongDeviceIdException from "../exceptions/WrongProfileIdException";
 import User from "../user/user.entity";
-import { LoginUserDto } from "../user/dtos/user.dto";
 import WrongProfileIdException from "../exceptions/WrongProfileIdException";
 import { UpdateProfileDto } from "./dtos/profile.dto";
 
 class ProfileService {
   private userRepository = dataSource.getRepository(User);
   private tokenRepository = dataSource.getRepository(Token);
-  private tokenService = new TokenService();
 
   public async getProfileById(id: number) {
     const user = await this.userRepository.findOne({

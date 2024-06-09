@@ -54,9 +54,9 @@ class ProfileController implements Controller {
       throw new WrongProfileIdException();
     }
 
-    const user = this.profileService.getProfileById(id);
-
     try {
+      const user = await this.profileService.getProfileById(id);
+
       response.send({ user });
     } catch (error) {
       next(error);
@@ -68,8 +68,10 @@ class ProfileController implements Controller {
     response: express.Response,
     next: express.NextFunction
   ) => {
-
-    const user = await this.profileService.updateProfileById(request.user.id, request.body);
+    const user = await this.profileService.updateProfileById(
+      request.user.id,
+      request.body
+    );
 
     try {
       response.send({ user });
